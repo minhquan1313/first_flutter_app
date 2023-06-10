@@ -39,8 +39,13 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const Text('A random idea:'),
+          const Text('A random nice idea:'),
           Text(appState.current.asLowerCase),
+          ElevatedButton(
+              onPressed: () {
+                print('button pressed');
+              },
+              child: const Text('Hello'))
         ],
       ),
     );
