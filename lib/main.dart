@@ -6,13 +6,22 @@ void main() {
   runApp(const MyApp());
 }
 
+class WordState extends ChangeNotifier {
+  var current = WordPair.random();
+
+  void getNext() {
+    current = WordPair.random();
+    notifyListeners();
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => WordState(),
       child: MaterialApp(
         title: 'MTBinh first app',
         theme: ThemeData(
@@ -25,29 +34,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-}
-
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var _word = context.watch<WordState>();
 
     return Scaffold(
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: [
-          const Text('A random nice idea:'),
-          Text(appState.current.asLowerCase),
-          ElevatedButton(
-              onPressed: () {
-                print('button pressed');
-              },
-              child: const Text('Hello'))
+          const Text('Chữ ngẫu nhiên nà:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          Text(_word.current.asLowerCase),
+          IconButton(
+            onPressed: () => {print('button pressed')},
+            icon: const Icon(
+              Icons.autorenew_rounded,
+              color: Colors.deepOrange,
+            ),
+          ),
+          TextButton(
+            child: const Text('Hello'),
+            onPressed: () {
+              _word.getNext();
+            },
+          )
         ],
-      ),
+      )),
     );
   }
 }
