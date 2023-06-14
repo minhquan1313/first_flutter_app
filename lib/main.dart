@@ -39,30 +39,55 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _word = context.watch<WordState>();
+    var word = context.watch<WordState>();
+    var wordFormatted = word.current.asLowerCase;
 
     return Scaffold(
-      body: SafeArea(
-          child: Column(
+      drawer: Drawer(
+        child: ListView(
+          // padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.message),
+              title: const Text('Messages'),
+              // visualDensity: const VisualDensity(vertical: -2),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.message),
+              title: const Text('Messages 2'),
+              // visualDensity: const VisualDensity(vertical: -2),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: const Text('Hi'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Chữ ngẫu nhiên nà:',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          Text(_word.current.asLowerCase),
+          Row(
+            children: [
+              const Text('Chữ ngẫu nhiên nà: ', style: TextStyle(fontSize: 20)),
+              Text(wordFormatted,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
+          ),
           IconButton(
-            onPressed: () => {print('button pressed')},
+            onPressed: () {
+              word.getNext();
+            },
             icon: const Icon(
               Icons.autorenew_rounded,
               color: Colors.deepOrange,
             ),
           ),
-          TextButton(
-            child: const Text('Hello'),
-            onPressed: () {
-              _word.getNext();
-            },
-          )
         ],
-      )),
+      ),
     );
   }
 }
